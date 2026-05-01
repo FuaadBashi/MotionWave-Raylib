@@ -15,7 +15,7 @@ struct AudioData {
     Uint32 len;   // ttal size of the audio file in bytes
     Uint32 pos;   // Current playback position (g eg a bookmark)
     float audio_samples[4096];
-    int sample_count;
+    int sample_count; 
     std::mutex audio_mutex;
 };
 
