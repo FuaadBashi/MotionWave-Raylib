@@ -2,21 +2,13 @@
 #include <GL/glew.h>
 #include <iostream>
 #include "render/Renderer.h"
+#include "audio/AudioData.h" 
 #include <mutex>
 
 struct RingBuffer {
     std::vector<float> buffer;
     std::atomic<size_t> write_pos;
     std::atomic<size_t> read_pos;
-};
-
-struct AudioData {
-    Uint8* buf;  // pointer to the audio file in memory
-    Uint32 len;   // ttal size of the audio file in bytes
-    Uint32 pos;   // Current playback position (g eg a bookmark)
-    float audio_samples[4096];
-    int sample_count; 
-    std::mutex audio_mutex;
 };
 
 void audioCallback(void* userdata, Uint8* stream, int len) {
@@ -114,13 +106,13 @@ int main(int argc, char* argv[]) {
     }
 
     // AudioData audioData = { audio_buf, audio_len, 0 };
-    AudioData audioData;
-    audioData.buf = audio_buf;
-    audioData.len = audio_len;
-    audioData.pos = 0;
-    audioData.sample_count = 0;
+    AudioData audio_data;
+    audio_data.buf = audio_buf;
+    audio_data.len = audio_len;
+    audio_data.pos = 0;
+    audio_data.sample_count = 0;
     spec.callback = audioCallback;
-    spec.userdata = &audioData;
+    spec.userdata = &audio_data;
 
 
     std::cout << "WAV loaded, buf=" << (void*)audio_buf << " len=" << audio_len << "\n";
@@ -143,7 +135,7 @@ int main(int argc, char* argv[]) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) running = false;
         }
-        renderer.draw();
+        renderer.draw(&audio_data);
         SDL_GL_SwapWindow(window);
     }
 

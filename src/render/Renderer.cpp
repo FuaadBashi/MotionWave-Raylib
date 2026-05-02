@@ -69,7 +69,7 @@ bool Renderer::init() {
     return true;
 }
 
-void Renderer::draw() {
+void Renderer::draw(AudioData *audio_data) {
     glClearColor(0.05f, 0.05f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderProgram);

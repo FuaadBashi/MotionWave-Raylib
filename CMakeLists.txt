@@ -12,6 +12,6 @@ add_executable(MotionWavePlus
     src/render/Renderer.cpp
 )
 
-target_include_directories(MotionWavePlus PRIVATE ${SDL2_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
+target_include_directories(MotionWavePlus PRIVATE ${SDL2_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(MotionWavePlus PRIVATE ${SDL2_LIBRARIES} GLEW::GLEW)
 

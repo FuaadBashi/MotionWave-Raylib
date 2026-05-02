@@ -1030,4 +1030,5 @@ CMakeFiles/MotionWavePlus.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stack \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h \
-  /Users/fuaadshurie/Desktop/Motionwaveplus/src/render/Renderer.h
+  /Users/fuaadshurie/Desktop/Motionwaveplus/src/render/Renderer.h \
+  /Users/fuaadshurie/Desktop/Motionwaveplus/src/audio/AudioData.h
