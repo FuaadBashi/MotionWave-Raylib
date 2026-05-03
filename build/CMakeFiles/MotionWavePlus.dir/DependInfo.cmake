@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/Users/fuaadshurie/Desktop/Motionwaveplus/src/audio/RingBuffer.cpp" "CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.o" "gcc" "CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.o.d"
   "/Users/fuaadshurie/Desktop/Motionwaveplus/src/main.cpp" "CMakeFiles/MotionWavePlus.dir/src/main.cpp.o" "gcc" "CMakeFiles/MotionWavePlus.dir/src/main.cpp.o.d"
   "/Users/fuaadshurie/Desktop/Motionwaveplus/src/render/Renderer.cpp" "CMakeFiles/MotionWavePlus.dir/src/render/Renderer.cpp.o" "gcc" "CMakeFiles/MotionWavePlus.dir/src/render/Renderer.cpp.o.d"
   )

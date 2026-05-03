@@ -129,6 +129,30 @@ MotionWavePlus/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MotionWavePlus.dir/build.make CMakeFiles/MotionWavePlus.dir/build
 .PHONY : MotionWavePlus/fast
 
+src/audio/RingBuffer.o: src/audio/RingBuffer.cpp.o
+.PHONY : src/audio/RingBuffer.o
+
+# target to build an object file
+src/audio/RingBuffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MotionWavePlus.dir/build.make CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.o
+.PHONY : src/audio/RingBuffer.cpp.o
+
+src/audio/RingBuffer.i: src/audio/RingBuffer.cpp.i
+.PHONY : src/audio/RingBuffer.i
+
+# target to preprocess a source file
+src/audio/RingBuffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MotionWavePlus.dir/build.make CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.i
+.PHONY : src/audio/RingBuffer.cpp.i
+
+src/audio/RingBuffer.s: src/audio/RingBuffer.cpp.s
+.PHONY : src/audio/RingBuffer.s
+
+# target to generate assembly for a file
+src/audio/RingBuffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MotionWavePlus.dir/build.make CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.s
+.PHONY : src/audio/RingBuffer.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MotionWavePlus"
+	@echo "... src/audio/RingBuffer.o"
+	@echo "... src/audio/RingBuffer.i"
+	@echo "... src/audio/RingBuffer.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

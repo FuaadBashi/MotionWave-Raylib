@@ -6,6 +6,13 @@
 #include <mutex>
 
 
+void decoderThread (AudioData * audio_data){
+    
+    for (int i = 0; i < audio_data->sample_count;++i){
+        audio_data -> ring_buf.write( audio_data->audio_samples, audio_data->sample_count);
+        
+    }
+}
 
 void audioCallback(void* userdata, Uint8* stream, int len) {
     AudioData* audio = (AudioData*)userdata;

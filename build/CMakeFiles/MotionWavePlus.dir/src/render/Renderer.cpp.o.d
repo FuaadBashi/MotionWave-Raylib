@@ -1031,4 +1031,5 @@ CMakeFiles/MotionWavePlus.dir/src/render/Renderer.cpp.o: \
   /opt/homebrew/Cellar/sdl2/2.32.10/include/SDL2/SDL_timer.h \
   /opt/homebrew/Cellar/sdl2/2.32.10/include/SDL2/SDL_version.h \
   /opt/homebrew/Cellar/sdl2/2.32.10/include/SDL2/SDL_locale.h \
-  /opt/homebrew/Cellar/sdl2/2.32.10/include/SDL2/SDL_misc.h
+  /opt/homebrew/Cellar/sdl2/2.32.10/include/SDL2/SDL_misc.h \
+  /Users/fuaadshurie/Desktop/Motionwaveplus/src/audio/RingBuffer.h

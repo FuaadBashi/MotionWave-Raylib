@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.o"
+  "CMakeFiles/MotionWavePlus.dir/src/audio/RingBuffer.cpp.o.d"
   "CMakeFiles/MotionWavePlus.dir/src/main.cpp.o"
   "CMakeFiles/MotionWavePlus.dir/src/main.cpp.o.d"
   "CMakeFiles/MotionWavePlus.dir/src/render/Renderer.cpp.o"

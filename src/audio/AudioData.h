@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include <mutex>
-
+#include "RingBuffer.h"
 
 
 struct AudioData {
@@ -11,4 +11,6 @@ struct AudioData {
     float audio_samples[4096];
     int sample_count; 
     std::mutex audio_mutex;
+    RingBuffer ring_buf;
+
 };
