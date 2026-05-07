@@ -5,6 +5,7 @@
 #include "audio/AudioData.h"
 #include <mutex>
 #include <thread>
+#include <algorithm>
 
 void decoderThread(AudioData *audio_data)
 {
@@ -21,7 +22,13 @@ void decoderThread(AudioData *audio_data)
             data[j] = (buff[current_sample_pos + j] / 32768.0f);
         }
         current_sample_pos = current_sample_pos + 4096;
+
+        std::unique_lock<std::mutex> lock(audio_data->mtx);
+        audio_data->cv.wait(lock, [&]{
+            return audio_data->ring_buf.has_space(sample_size);
+        });
         audio_data->ring_buf.write(data, sample_size);
+        
     }
 }
 
@@ -37,6 +44,16 @@ void audioCallback(void *userdata, Uint8 *stream, int len)
 
     // Read float samples from ring buffer
     bool ring_read = audio->ring_buf.read(temp, count);
+    audio->cv.notify_one();
+    {
+    std::lock_guard<std::mutex> lock(audio->audio_mutex);
+
+    size_t copy_count = std::min(count, (size_t)4096);
+
+    std::copy(temp, temp + copy_count, audio->audio_samples);
+
+    audio->sample_count = copy_count;
+}
 
     // If buffer underrun -> output silence
     if (!ring_read)
@@ -53,6 +70,7 @@ void audioCallback(void *userdata, Uint8 *stream, int len)
     for (size_t i = 0; i < count; ++i)
     {
         stream16[i] = (Sint16)(temp[i] * 32767.0f);
+        
     }
 }
 

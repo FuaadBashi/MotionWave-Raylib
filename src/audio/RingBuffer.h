@@ -6,6 +6,7 @@ class RingBuffer {
     std::atomic<size_t> write_pos;
     std::atomic<size_t> read_pos;
 public:
+    bool has_space(size_t count);   
     bool write(const float* data, size_t count);
     bool read(float* dest, size_t count);
 };

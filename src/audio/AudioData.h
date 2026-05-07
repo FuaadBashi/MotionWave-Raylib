@@ -11,6 +11,7 @@ struct AudioData {
     float audio_samples[4096];
     int sample_count; 
     std::mutex audio_mutex;
+    std::mutex mtx;
+    std::condition_variable cv;
     RingBuffer ring_buf;
-
 };
