@@ -69,18 +69,26 @@ bool Renderer::init() {
     return true;
 }
 
-void Renderer::draw(AudioData *audio_data) {
-
-    std::lock_guard<std::mutex> lock(audio_data->audio_mutex);
-    int size =  sizeof(audio_data->audio_samples) / sizeof(audio_data->audio_samples[0]);
-    float vertices[4096 * 3];
-    for (int i = 0; i < size; ++i) {
-        vertices[i*3] = (i / 4095.0f) * 2.0f - 1.0f;
-        vertices[i*3+1] = audio_data->audio_samples[i];
-         vertices[i*3+2] = 0;
-
+void Renderer::draw(AudioData *audio_data)
+{
+    // Copy audio data under lock then release immediately
+    float local_samples[4096];
+    int size;
+    {
+        std::lock_guard<std::mutex> lock(audio_data->audio_mutex);
+        size = sizeof(audio_data->audio_samples) / sizeof(audio_data->audio_samples[0]);
+        std::copy(audio_data->audio_samples, audio_data->audio_samples + size, local_samples);
     }
-    
+
+    // All OpenGL work happens outside the lock with the local copy
+    float vertices[4096 * 3];
+    for (int i = 0; i < size; ++i)
+    {
+        vertices[i * 3]     = (i / 4095.0f) * 2.0f - 1.0f;
+        vertices[i * 3 + 1] = local_samples[i];
+        vertices[i * 3 + 2] = 0.0f;
+    }
+
     glClearColor(0.05f, 0.05f, 0.15f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaderProgram);
@@ -88,8 +96,6 @@ void Renderer::draw(AudioData *audio_data) {
     glBindBuffer(GL_ARRAY_BUFFER, bufferID);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
     glDrawArrays(GL_LINE_STRIP, 0, size);
-
-    
 }
 
 void Renderer::cleanup() {

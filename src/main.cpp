@@ -24,11 +24,9 @@ void decoderThread(AudioData *audio_data)
         current_sample_pos = current_sample_pos + 4096;
 
         std::unique_lock<std::mutex> lock(audio_data->mtx);
-        audio_data->cv.wait(lock, [&]{
-            return audio_data->ring_buf.has_space(sample_size);
-        });
+        audio_data->cv.wait(lock, [&]
+                            { return audio_data->ring_buf.has_space(sample_size); });
         audio_data->ring_buf.write(data, sample_size);
-        
     }
 }
 
@@ -36,41 +34,32 @@ void audioCallback(void *userdata, Uint8 *stream, int len)
 {
     AudioData *audio = (AudioData *)userdata;
 
-    // Number of float samples needed
     size_t count = len / sizeof(Sint16);
-
-    // Temporary float buffer
     float temp[count];
 
-    // Read float samples from ring buffer
     bool ring_read = audio->ring_buf.read(temp, count);
     audio->cv.notify_one();
-    {
-    std::lock_guard<std::mutex> lock(audio->audio_mutex);
 
-    size_t copy_count = std::min(count, (size_t)4096);
-
-    std::copy(temp, temp + copy_count, audio->audio_samples);
-
-    audio->sample_count = copy_count;
-}
-
-    // If buffer underrun -> output silence
+    // Silence first if underrun — don't copy garbage into audio_samples
     if (!ring_read)
     {
         SDL_memset(stream, 0, len);
         return;
     }
 
-    // Interpret output stream as 16-bit PCM samples
-    Sint16 *stream16 = reinterpret_cast<Sint16 *>(stream);
+    // Lock only for the fast copy — release immediately after
+    {
+        std::lock_guard<std::mutex> lock(audio->audio_mutex);
+        size_t copy_count = std::min(count, (size_t)4096);
+        std::copy(temp, temp + copy_count, audio->audio_samples);
+        audio->sample_count = copy_count;
+    }
 
-    // Convert normalized floats (-1.0 -> 1.0)
-    // into signed 16-bit PCM audio
+    // Convert floats to Sint16 for SDL output
+    Sint16 *stream16 = reinterpret_cast<Sint16 *>(stream);
     for (size_t i = 0; i < count; ++i)
     {
         stream16[i] = (Sint16)(temp[i] * 32767.0f);
-        
     }
 }
 
@@ -125,7 +114,7 @@ int main(int argc, char *argv[])
     std::cout << "Renderer init done\n";
 
     // --- AUDIO FILE ---
-    const char *file = "/Users/fuaadshurie/Desktop/cable-car.wav";
+    const char *file = "/Users/fuaadshurie/Desktop/Life is Beautiful.wav";
     SDL_AudioSpec spec;
     Uint8 *audio_buf;
     Uint32 audio_len;
@@ -137,7 +126,8 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    std::cout << "spec format is:" << spec.format << "\n";;
+    std::cout << "spec format is:" << spec.format << "\n";
+    ;
 
     // AudioData audioData = { audio_buf, audio_len, 0 };
     AudioData audio_data;
