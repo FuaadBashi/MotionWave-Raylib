@@ -17,9 +17,13 @@ void decoderThread(AudioData *audio_data)
     for (int i = 0; current_sample_pos < (audio_data->len / sizeof(Sint16)); ++i)
     {
 
+        // In the decoder loop — guard the inner read
         for (int j = 0; j < sample_size; ++j)
         {
-            data[j] = (buff[current_sample_pos + j] / 32768.0f);
+            size_t idx = current_sample_pos + j;
+            data[j] = (idx < audio_data->len / sizeof(Sint16))
+                    ? buff[idx] / 32768.0f
+                    : 0.0f;
         }
         current_sample_pos = current_sample_pos + 4096;
 
@@ -96,6 +100,7 @@ int main(int argc, char *argv[])
         std::cout << SDL_GetError();
         return -1;
     }
+    SDL_GL_SetSwapInterval(1); 
 
     // --- GLEW ---
     GLenum err = glewInit();
@@ -165,6 +170,7 @@ int main(int argc, char *argv[])
         }
         renderer.draw(&audio_data);
         SDL_GL_SwapWindow(window);
+        SDL_Delay(16); // ← add this
     }
 
     // --- CLEANUP ---
